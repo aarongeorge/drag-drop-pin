@@ -1,0 +1,29 @@
+/**
+ * Pages: Home
+ */
+
+.draggable-pins-canvas {
+    background-color: #F3F3F3;
+    position: relative;
+
+    img {
+        user-select: none;
+    }
+}
+
+.pin {
+    background-color: #FF00FF;
+    border-radius: 30px;
+    border: 2px solid #FFFFFF;
+    height: 30px;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    user-select: none;
+    width: 30px;
+
+    &:hover {
+        cursor: move;
+    }
+}
