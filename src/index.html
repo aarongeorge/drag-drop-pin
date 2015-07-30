@@ -16,8 +16,12 @@
         <h1>Drag and drop pins demo</h1>
         <h3>Add a pin and drag it onto the image below</h3>
 
+        <button onclick="draggablePinsCanvas.addPin({ 'class': 'blue', 'number': draggablePinsCanvas.pins.length + 1, 'x': draggablePinsCanvas.pins.length * 10, 'y': draggablePinsCanvas.pins.length * 10 }); console.log('button clicked');">Add Pin</button>
+
         <div class="draggable-pins-canvas">
         </div>
+
+
 
         <!-- Scripts -->
         <script src="/js/main.js"></script>

@@ -25,23 +25,17 @@ window.addEventListener('DOMContentLoaded', function () {
     // DraggablePinsCanvas Methods
     DraggablePinsCanvas.prototype.init = function () {
 
-        // Save reference to this
-        var _this = this;
-
         // Create the image
         this.createImage();
 
         // Bind the event listeners
         this.bindEventListeners();
 
-        // Loop over all the pins and create them
+        // Loop over all the pins
         for (var i = 0, j = this.options.pins.length; i < j; i++) {
 
-            // Push the instance to the pins array
-            this.pins.push(new DraggablePin(this.options.pins[i], _this));
-
-            // Append pin to this.element
-            this.element.appendChild(this.pins[i].element);
+            // Create the pins
+            this.addPin(this.options.pins[i]);
         }
     };
 
@@ -58,6 +52,19 @@ window.addEventListener('DOMContentLoaded', function () {
         this.element.appendChild(this.image);
     };
 
+    // Create pin
+    DraggablePinsCanvas.prototype.addPin = function (pinOptions) {
+
+        // Create pin instance
+        var pin = new DraggablePin(pinOptions, this);
+
+        // Push the instance to the pins array
+        this.pins.push(pin);
+
+        // Append pin to this.element
+        this.element.appendChild(pin.element);
+    };
+
     // Element listeners
     DraggablePinsCanvas.prototype.bindEventListeners = function () {
 
@@ -68,7 +75,7 @@ window.addEventListener('DOMContentLoaded', function () {
         this.element.addEventListener('mousedown', function (e) {
 
             // If they clicked a pin
-            if (e.target.classList.contains('pin')) {
+            if (e.target.classList.contains(_this.options.basePinClass)) {
 
                 // Save reference to the pin
                 _this.draggingPin = _this.pins[e.target.getAttribute('data-pin-id')];
@@ -123,13 +130,16 @@ window.addEventListener('DOMContentLoaded', function () {
     };
 
     // DraggablePin Constructor
-    var DraggablePin = function (pinOptions, _this) {
+    var DraggablePin = function (pinOptions, canvasInstance) {
 
         // Store the options
         this.options = pinOptions;
 
         // Create element
         this.element = document.createElement('div');
+
+        // Add base class
+        this.element.classList.add(canvasInstance.options.basePinClass);
 
         // Add class
         this.element.classList.add(this.options.class);
@@ -138,7 +148,7 @@ window.addEventListener('DOMContentLoaded', function () {
         this.element.innerHTML = this.options.number;
 
         // Set the ID of the pin
-        this.element.setAttribute('data-pin-id', _this.pins.length);
+        this.element.setAttribute('data-pin-id', canvasInstance.pins.length);
 
         // Position pin
         this.element.style.transform = 'translate3D(' + this.options.x + 'px, ' + this.options.y + 'px, 0)';
@@ -151,20 +161,18 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // DraggablePinsCanvas instance
     var draggablePinsCanvas = createDraggablePinsCanvas(document.querySelector('.draggable-pins-canvas'), {
+        'basePinClass': 'pin',
         'image': 'img/demo-image.jpg',
         'pins': [
             {
-                'class': 'pin',
+                'class': 'pink',
                 'number': '1',
                 'x': '0',
                 'y': '0'
-            },
-            {
-                'class': 'pin',
-                'number': '2',
-                'x': '50',
-                'y': '50'
             }
         ]
     });
+
+    // Purely for testing purposes
+    window.draggablePinsCanvas = draggablePinsCanvas;
 });
